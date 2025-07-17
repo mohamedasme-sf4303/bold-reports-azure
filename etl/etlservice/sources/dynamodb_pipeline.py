@@ -3,6 +3,7 @@ import boto3
 import pandas as pd
 from boto3.dynamodb.conditions import Attr
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
+from typing import Iterator
 
 
 aws_access_key_id = '{1}'
@@ -10,7 +11,7 @@ aws_secret_access_key = '{2}'
 region = '{3}'
 
 
-try:
+def scan_dynamodb_items() -> Iterator[Dict]:
     session = boto3.Session(
         aws_access_key_id=aws_access_key_id,
         aws_secret_access_key=aws_secret_access_key,
@@ -29,9 +30,10 @@ try:
         response = table.scan(
             FilterExpression=Attr('{6}').gt('{7}')
         )
-        items = response['Items']
+
+        for item in response.get("Items", []):
+            yield item
         
-        df = pd.DataFrame(items)
     elif {9} and not {5}:
         last_evaluated_key = None
         while True:
@@ -48,18 +50,16 @@ try:
             last_evaluated_key = response.get('LastEvaluatedKey')
         
             if not last_evaluated_key:
-                df = pd.DataFrame(all_items)
                 break
     elif not {9} and not {5}:
         response = table.scan()
-        notfiltereditems = response['Items']
-        df = pd.DataFrame(notfiltereditems)
-    print(df.head())
+        for item in response.get("Items", []):
+            yield item
     
-    data = df.to_dict(orient="records")
-    
+try:
+    resource = dlt.resource(scan_dynamodb_items(), name = "{4}")
     pipeline = dlt.pipeline(pipeline_name="{0}_pipeline", destination='duckdb',staging={10} , dataset_name="{0}")
-    load_info = pipeline.run(data, table_name="{4}")
+    load_info = pipeline.run(resource)
     print(load_info)
 except NoCredentialsError:
     print("Credentials not available. Please check your AWS credentials.")

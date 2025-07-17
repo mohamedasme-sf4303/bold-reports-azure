@@ -1425,4 +1425,61 @@ plugins:
       ]]>
 		</yaml>
 	</extractor>
-</Connector>
+	<extractor>
+		<name>Snowflake</name>
+		<yaml>
+			<![CDATA[
+version: 1.0.1
+destination: 
+plugins:
+  extractors:
+    - name: Snowflake
+      connectorname: Snowflake
+      config:
+        user: <>
+        password: <>
+        account: <>
+        database: <>
+      select:
+        - tablename
+      ]]>
+		</yaml>
+	</extractor>
+<extractor>
+		<name>RedShift</name>
+		<yaml>
+			<![CDATA[
+version: 1.0.1
+destination: 
+plugins:
+  extractors:
+    - name: RedShift
+      connectorname: RedShift
+      schemaname: public
+      config:
+        host: hostname
+        port: 5439
+        username: user
+        database: database
+        password: password
+      select:
+        - tablename
+      ]]>
+		</yaml>
+	</extractor><extractor>
+		<name>Onedrive</name>
+		<yaml>
+			<![CDATA[
+version: 1.0.1
+destination: 
+plugins:
+  extractors:
+    - name: Onedrive
+      connectorname: Onedrive
+      config:
+        client_id: <>
+        tenant_id: <>
+        file_path: <>
+      ]]>
+		</yaml>
+	</extractor></Connector>

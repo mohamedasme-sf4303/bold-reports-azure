@@ -1,1 +1,0 @@
-ALTER TABLE BOLDRS_DeploymentReports ADD IsMakeReportPublic smallint NOT NULL;

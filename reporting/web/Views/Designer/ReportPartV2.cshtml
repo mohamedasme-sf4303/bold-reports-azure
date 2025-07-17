@@ -45,6 +45,7 @@
     var categoryName = HttpUtility.HtmlDecode(ViewBag.categoryName);
     var isShowImportSampleData = globalAppSettings.SystemSettings.IsShowImportSampleData;
     var isHideIconBasedOnDnsName = GlobalAppSettings.IsUrlInDnsList(globalAppSettings.DisplayUri);
+    var enableRenderSameTab = @ServerAppConfig.SameTabReportRender.ToString().ToLower();
 }
 
 <html lang="en" style="height:100%;width:100%">

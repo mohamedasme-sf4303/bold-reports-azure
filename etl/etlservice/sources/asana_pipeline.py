@@ -1,3 +1,4 @@
+from typing import Iterator
 import dlt
 import pandas as pd
 import urllib.request
@@ -38,9 +39,11 @@ with urllib.request.urlopen(req) as response:
     data = json.loads(response_data)
 
 tasks = data.get("data", [])
-df = pd.DataFrame(tasks)
 
-records = df.to_dict(orient="records")
+def task_data_generator() -> Iterator[dict]:
+    yield from tasks
+
+task_resource = dlt.resource(task_data_generator(), name = "{3}")
 
 pipeline = dlt.pipeline(
     pipeline_name="{2}_pipeline",       
@@ -48,6 +51,6 @@ pipeline = dlt.pipeline(
     dataset_name="{2}"              
 )
 
-load_info = pipeline.run(records, table_name="{3}")
+load_info = pipeline.run(task_resource)
 
 print("Data written to DuckDB")

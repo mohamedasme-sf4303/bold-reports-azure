@@ -7,7 +7,7 @@
     var helpSiteBaseUrl = ServerAppConfig.AppSettings.Documentation.BaseUri;
 }
 
-<script type="text/javascript">
+<script nonce="@Context.Items["ScriptNonce"]" type="text/javascript">
     var deploymentDashboardsUrl = "@Url.Action("AddDeploymentDashboard", "Publish")";
     var isDashboardNameExistUrl = "@Url.Action("IsDeploymentDashboardNameExists", "Publish")";
     var getDeploymentDashboardsUrl = "@Url.Action("GetDeploymentDashboards", "Publish")";

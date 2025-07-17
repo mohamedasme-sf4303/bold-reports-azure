@@ -8,6 +8,7 @@
     var itemPermissions = ViewBag.ItemAddOptions as Dictionary<ItemType, bool>;
     var itemsCount = ViewBag.ItemsCount as Dictionary<ItemType, int>;
     var reportServerResourceUrl = globalAppSettings.SystemSettings.CDNLink.TrimEnd('/');
+    var targetValue = @ServerAppConfig.SameTabReportRender ? "_self" : "_blank";
 }
 
 @model List<ItemDetail>
@@ -47,6 +48,7 @@
         var datasetId = "@ViewBag.DatasetId";
         var datasetName = decodeHtmlAsString("@ViewBag.DatasetName");
         var designerInstallationHelpUrl = "@(ServerAppConfig.AppSettings.Documentation.Uri + GlobalAppSettings.GetHelpSiteUrl(HelpSiteUrlNames.DesignerInstallation))";
+        var targetValue = "@(@ServerAppConfig.SameTabReportRender ? "_self" : "_blank")";
         $(document).ready(function () {
             $("#search-items").val("");
             if (datasetId != "" && datasetId != undefined && datasetName != "" && datasetName != undefined) {

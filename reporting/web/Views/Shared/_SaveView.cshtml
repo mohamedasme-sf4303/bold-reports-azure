@@ -43,7 +43,8 @@
         var rootUrlAction = "@Url.Action("", "")";
         var addViewUrl = { "web": "@Url.Action("onfiltersave", "ReportViews")", "api": "/items/views/add" };
         var getSavedViewUrl = { "web": "@Url.Action("GetViews", "ReportViews")", "api": "/items/views/get-by-item-id" };
-
+        var isSelfHosted = @Json.Serialize(ServerAppConfig.IsSelfHosted);
+        var enableRenderSameTab = @ServerAppConfig.SameTabReportRender.ToString().ToLower();
         var sameOrigin;
         try {
             sameOrigin = window.parent.location.host == window.location.host;

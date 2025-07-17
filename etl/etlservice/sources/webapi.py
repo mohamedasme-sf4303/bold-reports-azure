@@ -39,11 +39,13 @@ else:
 
 # Create DataFrame if data is available
 if api_data:
-    df = pd.json_normalize(api_data)
-    print(df.head())
 
+    def api_data_generator() -> Iterator[dict]:
+       yield from api_data
+    
+    resource = dlt.resource(api_data_generator(), name="{4}")
     pipeline = dlt.pipeline("{0}_pipeline", destination="filesystem", dataset_name="{0}")
-    pipeline.run(df, table_name="{4}", loader_file_format="jsonl")
+    pipeline.run(resource, loader_file_format="jsonl")
     dir_path = '{5}'
     try:
         if os.path.isdir(dir_path):
@@ -53,10 +55,13 @@ if api_data:
 
             for file_path in file_paths:
                 filePath = (file_path)
-                df = pd.read_json(filePath)
-                data = df.to_dict(orient="records",lines=True)
+                def jsonl_reader() -> Iterator[dict]:
+                    with open(filePath, "r", encoding="utf-8") as f:
+                        for line in f:
+                            yield json.loads(line)
+                web_data = dlt.resource(jsonl_reader(), name="{6}")
                 pipelinef = dlt.pipeline(pipeline_name="{0}_pipeline",destination='{9}',staging={10} ,dataset_name="{0}",)
-                load_info = pipelinef.run(data, table_name="{6}")
+                load_info = pipelinef.run(web_data)
                 print(pipelinef.last_trace.last_normalize_info)
         else:
             directory_path = '{7}'
@@ -65,10 +70,13 @@ if api_data:
     
             for file_path in file_paths:
                 filePath = (file_path)
-                df = pd.read_json(filePath,lines=True)
-                data = df.to_dict(orient="records")
+                def jsonl_reader() -> Iterator[dict]:
+                    with open(filePath, "r", encoding="utf-8") as f:
+                        for line in f:
+                            yield json.loads(line)
+                web_data = dlt.resource(jsonl_reader(), name="{6}")
                 pipelinef = dlt.pipeline(pipeline_name="{0}_pipeline",destination='{9}',staging={10} ,dataset_name="{0}",)
-                load_info = pipelinef.run(data, table_name="{6}")
+                load_info = pipelinef.run(web_data)
                 print(pipelinef.last_trace.last_normalize_info)
     except Exception as e:
         print(f'An unexpected error occurred: {{e}}')

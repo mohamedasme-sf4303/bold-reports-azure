@@ -41,6 +41,9 @@
     var hideEdit = iscustomUIProfile && (hideMenusAndOptions || customUI.Profiles[0].Reports.HideEdit);
     var hideComments = iscustomUIProfile && (hideMenusAndOptions || customUI.Profiles[0].Reports.HideComments);
     var hideViews = iscustomUIProfile && (hideMenusAndOptions || customUI.Profiles[0].Reports.HideViews);
+#pragma warning disable SCS0029 //There is no direct user input process for this issue.
+    var schemesJson = Html.Raw(Json.Serialize(schemes));
+#pragma warning restore SCS0029 //There is no direct user input process for this issue.
 
     if (embedConfig.IsEmbedReport || embedConfig.IsEmbedCode)
     {
@@ -147,8 +150,9 @@
         var hideEdit = @Json.Serialize(hideEdit);
         var hideComments = @Json.Serialize(hideComments);
         var hideViews = @Json.Serialize(hideViews);
-        var schemesDetails = @Html.Raw(Json.Serialize(schemes));
-
+        var schemesDetails = @schemesJson;
+        var isSelfHosted = @Json.Serialize(ServerAppConfig.IsSelfHosted);
+        var enableRenderSameTab = @ServerAppConfig.SameTabReportRender.ToString().ToLower();
         if (isCommonCacheEnabled){
             dateFormat = "@globalAppSettings.SystemSettings.DateFormat";
             timeFormat = @Json.Serialize(globalAppSettings.SystemSettings.TimeFormat) ? "HH:mm" : "hh:mm tt";

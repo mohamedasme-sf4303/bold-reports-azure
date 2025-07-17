@@ -29,4 +29,5 @@
   <EnableViewsInReportsMenu>false</EnableViewsInReportsMenu>
   <IsHideETLOption>false</IsHideETLOption>
   <IsHideReportViewerHeader>false</IsHideReportViewerHeader>
+  <SameTabReportRender>false</SameTabReportRender>
 </SystemSettings>

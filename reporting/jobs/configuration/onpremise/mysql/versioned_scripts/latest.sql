@@ -1,1 +1,0 @@
-ALTER TABLE `{database_name}`.BOLDRS_DeploymentReports ADD IsMakeReportPublic tinyint NOT NULL;

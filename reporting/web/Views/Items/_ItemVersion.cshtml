@@ -12,6 +12,10 @@
         var rollBackUrl = "@Url.Action("rollbackItem", "items")";
         var itemVersionUrl = "@Url.Action("VersionItems", "items")";
         var itemLogsUrl = "@Url.Action("ItemLogs", "items")";
+        var targetValue = "@(ServerAppConfig.SameTabReportRender ? "_self" : "_blank")";
+        $.views.helpers({
+            targetValue: targetValue
+        });
     </script>
     <environment include="Development,CloudDevelopment">
         <link rel="stylesheet" asp-append-version="true" href="@reportServerResourceUrl/cdn/css/itemversion.css" integrity="@IntegrityTagHelper.GetIntegrity("wwwroot/cdn/css/itemversion.css")" crossorigin="anonymous" />
@@ -96,11 +100,11 @@
                 <ul class="dropdown-menu" role="menu">
                     {{if ItemTypeId == "@((int)ItemType.Report)"}}
                     <li>
-                        <a title="" href="@Url.Action("Reports", "Reports")/{{:ItemId}}/{{:CategoryName}}/{{:Name}}?v={{:VersionNumber}}" target="_blank"><i class="su su-open"><i class="su-open path1"></i><i class="su-open path2"></i></i><span>[[[Open]]]</span></a>
+                        <a title="" href="@Url.Action("Reports", "Reports")/{{:ItemId}}/{{:CategoryName}}/{{:Name}}?v={{:VersionNumber}}" target="{{:~targetValue}}"><i class="su su-open"><i class="su-open path1"></i><i class="su-open path2"></i></i><span>[[[Open]]]</span></a>
                     </li>
                     {{if CanWrite}}
                     <li>
-                        <a title="[[[Edit]]]" href="@Url.Action("ReportDesigner", "Designer")/{{:ItemId}}/{{:CategoryName}}/{{:Name}}?v={{:VersionNumber}}" target="_blank">
+                        <a title="[[[Edit]]]" href="@Url.Action("ReportDesigner", "Designer")/{{:ItemId}}/{{:CategoryName}}/{{:Name}}?v={{:VersionNumber}}" target="{{:~targetValue}}">
                             <i class="su su-edit"></i>
                             <span>[[[Edit]]]</span>
                         </a>

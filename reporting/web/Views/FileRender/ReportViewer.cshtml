@@ -33,6 +33,8 @@
     var itemName = HttpUtility.HtmlDecode(ViewBag.itemDetail.Name);
     var toolBarRenderMode = ServerAppConfig.ToolBarRenderMode.ToLower();
     var faviconFallbackPath = reportServerResourceUrl + "/cdn/images/application/" + ServerAppConfig.AppSettings.AppBranding.Identifier + "/" + IconFileNames.Favicon;
+    var isSelfHosted = @Json.Serialize(ServerAppConfig.IsSelfHosted);
+    var enableRenderSameTab = @ServerAppConfig.SameTabReportRender.ToString().ToLower();
 
     if (embedConfig.IsEmbedReport || embedConfig.IsEmbedCode)
     {
@@ -576,7 +578,7 @@
                 });
 
             $liedit.click(function (e) {
-                window.open(editReportUrl, '_blank');
+                ReportRenderingTargetType(url)
             });
         }
 
