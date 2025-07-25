@@ -15,7 +15,7 @@
         "P2V3_4Core_16GB_PROD",
         "P3V3_8Core_32GB_PROD"
       ],
-      "defaultValue": "P1v3: 2core-8gb_RAM",
+      "defaultValue": "P1V3_2Core_8GB_DEV",
       "metadata": {
         "description": "The pricing tier size for the App Service Plan."
       }
@@ -37,7 +37,7 @@
         "description": "Type of the storage account created"
       },
       "defaultValue": "Standard_LRS"
-	}
+    }
   },
   "variables": {
     "sizeMapping": {
@@ -75,7 +75,7 @@
       "name": "[parameters('WebAppName')]",
       "type": "Microsoft.Web/sites",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-08-01",
+      "apiVersion": "2022-03-01",
       "dependsOn": [
         "[concat('Microsoft.Web/serverfarms/', variables('WebAppSvcPlanName'))]"
       ],
@@ -85,20 +85,20 @@
       },
       "properties": {
         "name": "[parameters('WebAppName')]",
-		"siteConfig": {
-            "metadata": [
-                {
-                    "name": "CURRENT_STACK",
-                    "value": "dotnet"
-                }
-            ]
+        "siteConfig": {
+          "metadata": [
+            {
+              "name": "CURRENT_STACK",
+              "value": "dotnet"
+            }
+          ]
         },
-        "clientAffinityEnabled": "false",
+        "clientAffinityEnabled": false,
         "serverFarmId": "[resourceId('Microsoft.Web/serverfarms/', variables('WebAppSvcPlanName'))]"
       },
       "resources": [
         {
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2022-03-01",
           "name": "web",
           "type": "config",
           "dependsOn": [
@@ -138,7 +138,7 @@
                 "virtualPath": "/reporting/jobs",
                 "physicalPath": "site\\wwwroot\\reporting\\jobs"
               },
- 	      {
+              {
                 "virtualPath": "/reporting/viewer",
                 "physicalPath": "site\\wwwroot\\reporting\\viewer"
               },
@@ -146,16 +146,16 @@
                 "virtualPath": "/reporting/reportservice",
                 "physicalPath": "site\\wwwroot\\reporting\\reportservice"
               },
-	      {
+              {
                 "virtualPath": "/etlservice",
                 "physicalPath": "site\\wwwroot\\etl\\etlservice"
               }
             ],
-			"http20Enabled": true
+            "http20Enabled": true
           }
         },
         {
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2022-03-01",
           "name": "web",
           "type": "sourcecontrols",
           "dependsOn": [
@@ -170,7 +170,7 @@
         {
           "name": "appsettings",
           "type": "config",
-          "apiVersion": "2015-08-01",
+          "apiVersion": "2022-03-01",
           "dependsOn": [
             "[concat('Microsoft.Web/sites/', parameters('WebAppName'))]",
             "web",
@@ -181,18 +181,18 @@
           },
           "properties": {
             "IdP:AzureBlobStorageAccountName": "[toLower(parameters('storageAccountName'))]",
-            "IdP:AzureBlobServiceEndpoint": "[concat('https://',toLower(parameters('storageAccountName')), '.blob.core.windows.net/')]",
+            "IdP:AzureBlobServiceEndpoint": "[concat('https://', toLower(parameters('storageAccountName')), '.blob.core.windows.net/')]",
             "IdP:AzureBlobStorageAccessKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', toLower(parameters('storageAccountName'))), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]",
             "IdP:AzureBlobContainerName": "boldreportscontainer",
             "IdP:AzureBlobConnectionType": "https",
-            "IdP:AzureBlobStorageUri": "[concat('https://',toLower(parameters('storageAccountName')), '.blob.core.windows.net/')]",
+            "IdP:AzureBlobStorageUri": "[concat('https://', toLower(parameters('storageAccountName')), '.blob.core.windows.net/')]",
             "IdP:StorageType": "AzureBlob",
             "StorageType": "AzureBlob",
             "IsAzureApplication": "true",
             "log4net.Config": "logs\\log4net.config",
             "WEBSITE_DYNAMIC_CACHE": "0",
-			"WEBSITE_LOAD_USER_PROFILE":"1",
-			"ApplicationUrl":"[concat('https://',parameters('WebAppName'), '.azurewebsites.net')]"
+            "WEBSITE_LOAD_USER_PROFILE": "1",
+            "ApplicationUrl": "[concat('https://', parameters('WebAppName'), '.azurewebsites.net')]"
           }
         }
       ]
@@ -201,14 +201,14 @@
       "name": "[toLower(parameters('storageAccountName'))]",
       "type": "Microsoft.Storage/storageAccounts",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
-      "dependsOn": [],
+      "apiVersion": "2022-05-01",
       "tags": {
         "displayName": "storageaccount"
       },
-      "properties": {
-        "accountType": "[parameters('storageAccountType')]"
-      }
+      "sku": {
+        "name": "[parameters('storageAccountType')]"
+      },
+      "properties": {}
     }
   ]
 }
