@@ -17,7 +17,7 @@
         "P2V3_4Core_16GB_PROD",
         "P3V3_8Core_32GB_PROD"
       ],
-      "defaultValue": "P1v3: 2core-8gb_RAM",
+      "defaultValue": "P1V3_2Core_8GB_DEV",
       "metadata": {
         "description": "The pricing tier size for the App Service Plan."
       }
