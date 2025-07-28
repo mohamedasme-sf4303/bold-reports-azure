@@ -24,7 +24,8 @@
       "type": "string",
       "metadata": {
         "description": "Storage account name for Bold Reports Server. The name must be between 3 to 24 characters long, and can contain only numbers and lowercase letters."
-      }
+      },
+      "defaultValue": "storageaccountname"
     },
     "storageAccountType": {
       "type": "string",
